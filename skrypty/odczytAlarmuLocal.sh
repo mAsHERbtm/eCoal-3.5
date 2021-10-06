@@ -1,4 +1,12 @@
 #!/bin/bash
+# Skrypt sprawdzający czy w sterowniku eCoal 3.5 wystąpił alarm. Wynik sprawdzenia zostaje wyświetlony w konsoli oraz zapisany do pliku 'alarm.log'
+# Skrypt sprawdza 24 możliwe do wystąpienia alarmy np. alarm_tkot, alarm_tpow, alarm_tpod, alarm_tcwu etc.
+#   - jeżeli alarm wystąpił: wyświetla wartość "1"
+#   - jeżeli alarm nie wystąpił: wyświetla wartość "0"
+# dodatkowo każde wywołanie skryptu zapisuje stan wszystkich alarmów do pliku  'alarm_status_historia.log' - można zweryfikować historię sprawdzeń.
+#
+# UWAGA: Przed pierwszym uruchomieniem należy uzupełnić zmienne: login, haslo, ip
+
 
 #DANE LOGOWANIA
 login='root';

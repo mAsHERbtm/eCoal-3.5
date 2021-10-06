@@ -1,4 +1,8 @@
 #!/bin/bash
+# Skrypt sprawdzający czy w sterowniku eCoal 3.5 wystąpił alarm. Wynik sprawdzenia zostaje zapisany do pliku 'alarm_status.json' w formacie JSON
+# Skrypt sprawdza 24 możliwe do wystąpienia alarmy np. alarm_tkot, alarm_tpow, alarm_tpod, alarm_tcwu etc.
+#
+# UWAGA: Przed pierwszym uruchomieniem należy uzupełnić zmienne: login, haslo, ip
 
 #DANE LOGOWANIA
 login='root';
