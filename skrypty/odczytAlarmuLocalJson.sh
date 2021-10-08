@@ -3,6 +3,10 @@
 # Skrypt sprawdza 24 możliwe do wystąpienia alarmy np. alarm_tkot, alarm_tpow, alarm_tpod, alarm_tcwu etc.
 #
 # UWAGA: Przed pierwszym uruchomieniem należy uzupełnić zmienne: login, haslo, ip
+#
+# WYMAGANIA: 
+#   - curl: sudo apt-get install curl
+#   - jq:   sudo apt-get install jq
 
 #DANE LOGOWANIA
 login='root';

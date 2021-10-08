@@ -6,7 +6,9 @@
 # dodatkowo każde wywołanie skryptu zapisuje stan wszystkich alarmów do pliku  'alarm_status_historia.log' - można zweryfikować historię sprawdzeń.
 #
 # UWAGA: Przed pierwszym uruchomieniem należy uzupełnić zmienne: login, haslo, ip
-
+#
+# WYMAGANIA: 
+#   - curl: sudo apt-get install curl
 
 #DANE LOGOWANIA
 login='root';
