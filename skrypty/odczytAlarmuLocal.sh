@@ -6,9 +6,20 @@
 # dodatkowo każde wywołanie skryptu zapisuje stan wszystkich alarmów do pliku  'alarm_status_historia.log' - można zweryfikować historię sprawdzeń.
 #
 # UWAGA: Przed pierwszym uruchomieniem należy uzupełnić zmienne: login, haslo, ip
-#
-# WYMAGANIA: 
+# 
+# --- WYMAGANIA ----
 #   - curl: sudo apt-get install curl
+#
+# ---- LOKALIZACJA PLIKÓW ---- 
+# Lokalizacja pliku:    /config/scripts/odczytAlarmuLocal.sh
+# Aktualny status:      /config/alarm_status.txt
+# Historia sprawdzeń:   /config/alarm_status_historia.log
+#
+# ---- OZNACZENIA ALARMÓW ----
+# 0 - brak alarmu 
+# 1 - alarm (ogólna informacja)
+# 2 - otwarty zasobnik
+# 3 - zerwana zawleczka podajnika
 
 #DANE LOGOWANIA
 login='root';
@@ -42,6 +53,14 @@ curl --silent -X GET 'http://'$login':'$haslo'@'$ip'/getregister.cgi?device=0&al
 curl --silent -X GET 'http://'$login':'$haslo'@'$ip'/getregister.cgi?device=0&alarm_uszk_pod' >> alarm.log && echo >> alarm.log
 curl --silent -X GET 'http://'$login':'$haslo'@'$ip'/getregister.cgi?device=0&alarm_tco1_hi' >> alarm.log && echo >> alarm.log
 
+# WERYFIKACJA POBRANYCH DANYCH Z CZUJNIKÓW
+if [ -s alarm.log ]; then
+        > null &&  rm null
+else
+    echo "Brak danych. Sprawdź poprawność adresu, loginu lub hasła"
+    exit 1;
+fi
+
 # OBRÓBKA WYNIKÓW
 while read f; do
     parametr=$(echo $f | awk '{ print $5 }' | cut -f2 -d'=');
@@ -52,16 +71,25 @@ while read f; do
     OUTPUT=$OUTPUT"${parametr}:${wartosc}; "
 
     if [ $wartosc == "1" ] ; then
-        echo $wartosc > alarm_status.log
-        break;
+
+    # ZAPISANIE ODCZYTU DO  HISTORII
+    echo $(date '+%Y-%m-%d %H:%M:%S') - "$parametr":"$wartosc" >> alarm_status_historia.log
+        
+        if [ $parametr == "alarm_otw_zasob" ]; then
+            echo "2" > alarm_status.log
+            break;
+        elif [ $parametr == "alarm_uszk_pod" ]; then
+            echo "3" > alarm_status.log
+            break;
+        else
+            echo $wartosc > alarm_status.log
+            break;
+        fi
     else 
         echo $wartosc > alarm_status.log  
     fi
 
 done <alarm.log
-
-# ZAPISANIE ODCZYTU DO LOGA
-echo $(date '+%Y-%m-%d %H:%M:%S') $'\n' "$OUTPUT" $'\n'>> alarm_status_historia.log
 
 # USUWANIE PLIKU POMOCNICZEGO
 rm -f alarm.log
