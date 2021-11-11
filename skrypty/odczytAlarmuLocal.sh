@@ -20,6 +20,7 @@
 # 1 - alarm (ogólna informacja)
 # 2 - otwarty zasobnik
 # 3 - zerwana zawleczka podajnika
+# 4 - pusty zasobnik
 
 #DANE LOGOWANIA
 login='root';
@@ -81,6 +82,9 @@ while read f; do
         elif [ $parametr == "alarm_uszk_pod" ]; then
             echo "3" > alarm_status.log
             break;
+        elif [ $parametr == "alarm_zasobnik" ]; then
+            echo "4" > alarm_status.log
+            break;    
         else
             echo $wartosc > alarm_status.log
             break;
